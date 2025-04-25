@@ -1,0 +1,73 @@
+#########   Pipeline Scripting
+Pipeline scripting allows automation of CI/CD workflows using different scripting languages and formats, depending on the platform.
+
+1. Jenkinsfile:
+    - Defines Jenkins pipelines using **Groovy syntax**.
+    - Supports **Declarative** (easier, structured) and **Scripted** (flexible, powerful) pipelines.
+         Example (Declarative Pipeline):
+            pipeline {
+                agent any
+                stages {
+                    stage('Build') {
+                        steps {
+                            echo 'Building...'
+                        }
+                    }
+                }
+            }
+
+2. GitLab CI/CD YAML:
+    - Defines GitLab pipelines using **YAML syntax**.
+    - Uses **stages** and **jobs** to define the workflow.
+         Example:
+            stages:
+            - build
+            build_job:
+            stage: build
+            script:
+                - echo 'Building...'
+
+3. GitHub Actions Workflows:
+    - Uses **YAML-based workflow files** stored in `.github/workflows/`.
+    - Defines jobs and steps executed on GitHub-hosted runners.
+         Example:
+            name: CI
+            on: push
+            jobs:
+            build:
+                runs-on: ubuntu-latest
+                steps:
+                - name: Run a script
+                    run: echo 'Building...'
+
+4. Declarative vs Scripted Pipelines:
+    - **Declarative Pipelines:** Easier to read, maintain, and debug (used in Jenkins and GitLab CI).
+    - **Scripted Pipelines:** More flexible, allows custom logic (mainly for complex Jenkins pipelines).
+
+5. Shared Libraries:
+    - Reuse pipeline logic across multiple projects.
+    - Reduces duplication and improves maintainability.
+         Example in Jenkins:
+            @Library('my-shared-library') _
+
+6. Conditional Logic:
+    - Use **if/else statements** or `when` conditions to control execution flow.
+         Example in GitLab CI:
+            job:
+            script:
+                - echo 'Run this only on main'
+            only:
+                - main
+
+7. Parallel Jobs:
+    - Run multiple jobs simultaneously to speed up builds.
+         Example in GitHub Actions:
+            jobs:
+            test1:
+                runs-on: ubuntu-latest
+            test2:
+                runs-on: ubuntu-latest
+
+Understanding pipeline scripting is essential for creating efficient and automated CI/CD
+workflows, minimizing manual tasks, and ensuring consistency throughout the development 
+process.

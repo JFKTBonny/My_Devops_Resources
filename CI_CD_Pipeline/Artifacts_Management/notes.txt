@@ -1,0 +1,46 @@
+#########    Artifact Management:
+    Artifact management involves:
+        -  storing, 
+        - versioning, 
+        - and distributing build artifacts such as libraries, packages, and container images.
+
+1. Maven:
+    - A build automation and dependency management tool for Java projects.
+    - Uses `pom.xml` to define dependencies.
+    - Stores artifacts in local (`~/.m2/repository/`) or remote repositories (Maven Central, Nexus, Artifactory).
+         Example command:
+             mvn install (Installs the artifact in the local repository).
+
+2. npm (Node Package Manager):
+    - Manages JavaScript/Node.js packages.
+    - Stores packages in `package.json` and downloads from npm registry.
+         Example commands:
+            npm install package-name (Installs a package).
+            npm publish (Publishes a package to the npm registry).
+
+3. Docker Images:
+    - Stores and manages containerized applications as images.
+    - Uses Docker registries like Docker Hub, AWS ECR, or Azure Container Registry.
+         Example commands:
+            docker build -t myapp:v1 . (Build an image).
+            docker push myapp:v1 (Push image to a registry).
+
+4. JFrog Artifactory:
+    - A universal artifact repository supporting multiple package types (Maven, npm, Docker, etc.).
+    - Enables version control, security scanning, and integration with CI/CD pipelines.
+
+5. Nexus Repository:
+    - A repository manager for Java (Maven), npm, Python, and other artifacts.
+    - Helps store, manage, and distribute build dependencies securely.
+
+6. Versioning:
+    - Follows **Semantic Versioning** (SemVer) to track artifact versions:
+    - `MAJOR.MINOR.PATCH` (e.g., `v1.0.0`).
+    - `MAJOR` (breaking changes), `MINOR` (new features), `PATCH` (bug fixes).
+         Example:
+            npm version patch (Bumps the patch version).
+
+Effective artifact management ensures:
+     - reliable software delivery 
+     - dependency control 
+     - and secure storage of build artifacts.
