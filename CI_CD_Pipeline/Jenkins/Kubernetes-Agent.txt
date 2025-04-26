@@ -1,0 +1,74 @@
+Prerequisites:
+
+    Kubernetes Cluster: A running Kubernetes cluster (e.g., Minikube, EKS, GKE, AKS).
+    Jenkins Installed: Jenkins running inside Kubernetes or externally.
+    Kubernetes Plugin: Install the "Kubernetes" plugin in Jenkins.
+    Jenkins Service Account: Ensure Jenkins has the right RBAC permissions.
+
+Step 1: Configure Kubernetes Cloud in Jenkins
+    Login to Jenkins → Manage Jenkins → Manage Nodes and Clouds → Configure Clouds.
+    Click "Add a new cloud" → Choose Kubernetes.
+    Kubernetes URL:
+
+        If Jenkins is inside the cluster: https://kubernetes.default.svc
+        If Jenkins is external: Use your Kubernetes API URL.
+
+    Kubernetes Namespace: Specify where the agents will be deployed (e.g., jenkins).
+    Jenkins URL: Enter the Jenkins URL.
+    Credentials: Add a Kubernetes service account token (RBAC required).
+    Test Connection: Click Test Connection to verify connectivity.
+
+Step 2: Configure Pod Template
+    Under Kubernetes Cloud, click "Pod Templates" → "Add Pod Template".
+    Name: Give a descriptive name (e.g., k8s-agent).
+    Labels: Assign labels (e.g., k8s-agent).
+    Namespace: (Optional) Define where the pod should run.
+    Container Template:
+    Name: jnlp
+    Docker Image: Use a Jenkins agent image (e.g., jenkins/inbound-agent).
+    Working Directory: /home/jenkins/agent
+    Command to run: (Leave empty for default)
+    Arguments to pass: (Leave empty for default)
+    Additional Containers:
+    Add other containers (e.g., Docker, Maven, Node.js) as needed.
+
+Step 3: Assign Kubernetes Agent to a Job
+    Go to Jenkins Job → Configure.
+    Select Restrict where this project can be run.
+    Enter the label you defined earlier (k8s-agent).
+    Save and run the job.
+    Step 4: Verify Agent Deployment
+    Run a Jenkins job and check if a pod is created in Kubernetes.
+    Use kubectl get pods -n jenkins to confirm.
+    Check logs with kubectl logs <pod-name> -n jenkins.
+
+NOTES: RBAC Configuration for Jenkins Service Account
+
+If Jenkins is running inside the cluster, ensure the following RBAC configuration:
+
+    apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+    name: jenkins
+    namespace: jenkins
+    ---
+    apiVersion: rbac.authorization.k8s.io/v1
+    kind: ClusterRoleBinding
+    metadata:
+    name: jenkins
+    roleRef:
+    apiGroup: rbac.authorization.k8s.io
+    kind: ClusterRole
+    name: cluster-admin
+    subjects:
+    - kind: ServiceAccount
+        name: jenkins
+        namespace: jenkins
+
+Apply it using:
+    kubectl apply -f jenkins-rbac.yaml
+
+
+
+
+

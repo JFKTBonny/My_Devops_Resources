@@ -1,0 +1,103 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: 'Select the deployment environment')
+        booleanParam(name: 'RUN_CI', defaultValue: true, description: 'Run CI process (Build, Test, Deploy to GitHub)')
+    }
+
+    environment {
+        REPO_URL = 'git@github.com:your-org/your-repo.git'  // Replace with your GitHub repo URL
+        DOCKER_IMAGE = 'my-app'
+        DOCKER_REGISTRY = 'docker.io/your-dockerhub' // Replace with your DockerHub or other registry
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            when { expression { params.RUN_CI } } // Run only if CI is enabled
+            steps {
+                script {
+                    echo "Building application for ${params.ENV}..."
+                    // Add build commands here (e.g., Maven, Gradle, NPM, etc.)
+                }
+            }
+        }
+
+        stage('Test') {
+            when { expression { params.RUN_CI } }
+            steps {
+                script {
+                    echo "Running tests for ${params.ENV}..."
+                    // Add test commands here (e.g., unit tests, integration tests, etc.)
+                }
+            }
+        }
+
+        stage('Docker Build & Push') {
+            when { expression { params.ENV == 'dev' } } // Only build image in dev
+            steps {
+                script {
+                    def imageTag = "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${params.ENV}-${env.BUILD_NUMBER}"
+                    echo "Building Docker image: ${imageTag}"
+                    sh """
+                        docker build -t ${imageTag} .
+                        docker push ${imageTag}
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to GitHub') {
+            when { expression { params.RUN_CI } }
+            steps {
+                script {
+                    echo "Deploying to GitHub..."
+                    sh """
+                        git config --global user.email "jenkins@yourcompany.com"
+                        git config --global user.name "Jenkins"
+                        git add .
+                        git commit -m "CI/CD deployment - Build ${env.BUILD_NUMBER}"
+                        git push origin HEAD:main
+                    """
+                }
+            }
+        }
+
+        stage('Deploy to Environment') {
+            steps {
+                script {
+                    if (params.ENV == 'dev') {
+                        echo "Deploying to Development..."
+                        // Add Dev deployment steps
+                    } else if (params.ENV == 'staging') {
+                        echo "Deploying to Staging..."
+                        // Add Staging deployment steps
+                    } else if (params.ENV == 'prod') {
+                        echo "Deploying to Production..."
+                        // Add Production deployment steps
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline execution completed."
+        }
+    }
+}
+
+
+// How It Works:
+// Users select the ENV parameter when running the pipeline (dev, staging, or prod).
+// Users enable or disable RUN_CI, which controls whether Build, Test, and Deploy to GitHub run.
+// Build and Test only run if RUN_CI is true.
+// Docker Image is only built in dev (since you should reuse the same image in staging/prod).
+// Deployment happens based on ENV selection.

@@ -1,0 +1,44 @@
+- name: Install Jenkins
+  hosts: jenkins_server
+  become: yes
+  tasks:
+    - name: Install Java
+      apt:
+        name: openjdk-17-jdk
+        state: present
+
+    - name: Add Jenkins Repo Key
+      apt_key:
+        url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+        state: present
+
+    - name: Add Jenkins Repository
+      apt_repository:
+        repo: "deb https://pkg.jenkins.io/debian-stable binary/"
+        state: present
+
+    - name: Install Jenkins
+      apt:
+        name: jenkins
+        state: present
+
+    - name: Start and Enable Jenkins
+      systemd:
+        name: jenkins
+        enabled: yes
+        state: started
+
+    - name: Wait for Jenkins to be available
+      wait_for:
+        port: 8080
+        delay: 10
+        timeout: 60
+        state: started
+
+    - name: Get initial admin password
+      command: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: jenkins_admin_password
+
+    - name: Output Jenkins URL and initial admin password
+      debug:
+        msg: "Jenkins is running at http://{{ ansible_host }}:8080 and the initial admin password is {{ jenkins_admin_password.stdout }}"

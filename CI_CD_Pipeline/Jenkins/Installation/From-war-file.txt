@@ -1,0 +1,7 @@
+open your terminal and run the commands below:
+
+    wget https://get.jenkins.io/war-stable/latest/jenkins.war
+    java -jar jenkins.war
+
+
+Then access Jenkins at: http://localhost:8080/

@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'ENV', choices: ['dev', 'staging', 'prod'], description: 'Select deployment environment')
+    }
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    echo "Building for ${params.ENV}"
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    if (params.ENV == 'dev') {
+                        echo "Deploying to Development"
+                        // Dev deployment steps
+                    } else if (params.ENV == 'staging') {
+                        echo "Deploying to Staging"
+                        // Staging deployment steps
+                    } else if (params.ENV == 'prod') {
+                        echo "Deploying to Production"
+                        // Production deployment steps
+                    }
+                }
+            }
+        }
+    }
+}
+

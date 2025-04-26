@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  jenkins:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./jenkins_data:/var/jenkins_home
+
+
+# Run: docker-compose build to build the container.
+# Run: docker-compose up -d to start the container.
+# Access Jenkins at: http://localhost:8080/jenkins.

@@ -1,0 +1,252 @@
+# example using sonarcloud
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main  # Runs when code is pushed to main
+  pull_request:
+    branches:
+      - main  # Runs for PRs targeting the main branch
+
+jobs:
+  build-test-sonar:
+    name: Build, Test & SonarQube Analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 11 (example for a Java-based framework)
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Set up Node.js (example for a Node.js framework)
+        uses: actions/setup-node@v4
+        with:
+          node-version: '16'
+
+      - name: Set up Python (example for a Python framework)
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Set up Ruby (example for a Ruby framework)
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+
+      - name: Install dependencies for all frameworks
+        run: |
+          npm install       # for Node.js
+          pip install -r requirements.txt  # for Python
+          bundle install    # for Ruby
+          ./gradlew build   # for Java
+
+      - name: Run tests for all frameworks
+        run: |
+          npm test          # for Node.js
+          pytest            # for Python
+          bundle exec rspec # for Ruby
+          ./gradlew test    # for Java
+
+      - name: Run SonarQube analysis
+        uses: sonarsource/sonarcloud-github-action@v1
+        with:
+          organization: ${{ secrets.SONAR_ORG }}
+          token: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Wait for SonarQube Quality Gate
+        run: |
+          curl -u ${{ secrets.SONAR_TOKEN }} -X POST "https://sonarcloud.io/api/qualitygates/project_status?projectKey=${{ secrets.SONAR_PROJECT_KEY }}" | jq '.projectStatus.status' | grep -q "OK"
+        continue-on-error: false
+
+  build-and-push-ecr:
+    name: Build Docker Image & Push to Amazon ECR
+    runs-on: ubuntu-latest
+    needs: build-test-sonar  # Wait for the build-test-sonar job to finish
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build Docker image
+        run: docker build -t my-app:latest .
+
+      - name: Tag Docker image for ECR
+        run: docker tag my-app:latest ${{ secrets.ECR_REPO_URI }}:latest
+
+      - name: Push Docker image to ECR
+        run: docker push ${{ secrets.ECR_REPO_URI }}:latest
+
+  deploy:
+    name: Deploy using Docker Compose
+    runs-on: ubuntu-latest
+    needs: build-and-push-ecr  # Wait for the build-and-push-ecr job to finish
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        uses: docker/setup-buildx-action@v2
+
+      - name: SSH into remote server and deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            docker-compose -f /path/to/docker-compose.yml pull
+            docker-compose -f /path/to/docker-compose.yml down || true
+            docker-compose -f /path/to/docker-compose.yml up -d
+
+
+# Setup Required GitHub Secrets (Settings > Secrets):
+# SONAR_ORG: Your SonarQube organization name.
+# SONAR_TOKEN: SonarQube token for authentication.
+# SONAR_PROJECT_KEY: Your project key in SonarQube.
+# ECR_REPO_URI: The URI of your Amazon ECR repository (e.g., aws_account_id.dkr.ecr.region.amazonaws.com/my-app).
+# SERVER_HOST: The IP or domain of your remote server.
+# SERVER_USER: The SSH username for the remote server.
+# SSH_PRIVATE_KEY: The private SSH key for secure connection.
+
+
+
+# name: CI/CD Pipeline
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   pull_request:
+#     branches:
+#       - main
+
+# jobs:
+#   build-test-sonar:
+#     name: Build, Test & SonarQube Analysis
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Set up frameworks and dependencies
+#         run: |
+#           npm install
+#           pip install -r requirements.txt
+#           bundle install
+#           ./gradlew build
+
+#       - name: Run tests for all frameworks
+#         run: |
+#           npm test
+#           pytest
+#           bundle exec rspec
+#           ./gradlew test
+
+#       - name: Run SonarQube analysis
+#         uses: sonarsource/sonarcloud-github-action@v1
+#         with:
+#           organization: ${{ secrets.SONAR_ORG }}
+#           token: ${{ secrets.SONAR_TOKEN }}
+
+#       - name: Wait for SonarQube Quality Gate
+#         run: |
+#           status=$(curl -u ${{ secrets.SONAR_TOKEN }} -X POST "https://sonarcloud.io/api/qualitygates/project_status?projectKey=${{ secrets.SONAR_PROJECT_KEY }}" | jq '.projectStatus.status')
+#           if [[ "$status" != "\"OK\"" ]]; then
+#             echo "SonarQube quality gate failed: $status"
+#             exit 1
+#           fi
+
+#   build-and-push-ecr:
+#     name: Build Docker Image & Push to Amazon ECR
+#     runs-on: ubuntu-latest
+#     needs: build-test-sonar
+
+#     steps:
+#       - name: Log in to Amazon ECR
+#         uses: aws-actions/amazon-ecr-login@v1
+
+#       - name: Build Docker image
+#         run: docker build -t my-app:latest .
+
+#       - name: Tag Docker image for ECR
+#         run: docker tag my-app:latest ${{ secrets.ECR_REPO_URI }}:latest
+
+#       - name: Push Docker image to ECR
+#         run: docker push ${{ secrets.ECR_REPO_URI }}:latest
+
+#   deploy:
+#     name: Deploy using Docker Compose
+#     runs-on: ubuntu-latest
+#     needs: build-and-push-ecr
+
+#     steps:
+#       - name: SSH into remote server and deploy
+#         uses: appleboy/ssh-action@v1
+#         with:
+#           host: ${{ secrets.SERVER_HOST }}
+#           username: ${{ secrets.SERVER_USER }}
+#           key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           script: |
+#             docker-compose -f /path/to/docker-compose.yml pull
+#             docker-compose -f /path/to/docker-compose.yml down || true
+#             docker-compose -f /path/to/docker-compose.yml up -d
+
+# required secrets:
+#    SONAR_ORG: Your SonarCloud organization name.
+#    SONAR_TOKEN: The authentication token you generate from SonarCloud.
+#    SONAR_PROJECT_KEY: The unique key for your project in SonarCloud.
+    
+
+
+#  using the self hosted ,managed sonarqube server, sonar jobs will be set as below:
+# jobs:
+#   build-test-sonar:
+#     name: Build, Test & SonarQube Analysis
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+
+#       - name: Set up frameworks and dependencies
+#         run: |
+#           npm install
+#           pip install -r requirements.txt
+#           bundle install
+#           ./gradlew build
+
+#       - name: Run tests for all frameworks
+#         run: |
+#           npm test
+#           pytest
+#           bundle exec rspec
+#           ./gradlew test
+
+#       - name: Run SonarQube analysis
+#         uses: sonarsource/sonarcloud-github-action@v1
+#         with:
+#           sonar-host-url: ${{ secrets.SONAR_HOST_URL }}  # Point to your self-hosted SonarQube server
+#           token: ${{ secrets.SONAR_TOKEN }}  # SonarQube authentication token
+
+#       - name: Wait for SonarQube Quality Gate
+#         run: |
+#           status=$(curl -u ${{ secrets.SONAR_TOKEN }} -X POST "${{ secrets.SONAR_HOST_URL }}/api/qualitygates/project_status?projectKey=${{ secrets.SONAR_PROJECT_KEY }}" | jq '.projectStatus.status')
+#           if [[ "$status" != "\"OK\"" ]]; then
+#             echo "SonarQube quality gate failed: $status"
+#             exit 1
+#           fi
+
+# required secrets:
+#           SONAR_HOST_URL: The URL of your self-hosted SonarQube server (e.g., http://your-sonar-server.com).
+#           SONAR_TOKEN: The authentication token you generate from your SonarQube account.
+#           SONAR_PROJECT_KEY: Your project key in SonarQube.    

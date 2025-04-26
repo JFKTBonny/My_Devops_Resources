@@ -1,0 +1,150 @@
+pipeline {
+    agent any
+
+    environment {
+        SONARQUBE_SERVER = 'SonarQube'  // Change this to your SonarQube server name in Jenkins settings
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/your-repo/your-java-app.git'
+            }
+        }
+
+        stage('Build Project') {
+            steps {
+                script {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+
+        stage('Run Checkstyle') {
+            steps {
+                script {
+                    sh 'mvn checkstyle:checkstyle'
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/checkstyle-result.xml', fingerprint: true
+                }
+            }
+        }
+
+        stage('Run PMD') {
+            steps {
+                script {
+                    sh 'mvn pmd:pmd'
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/pmd.xml', fingerprint: true
+                }
+            }
+        }
+
+        stage('Run SpotBugs (FindBugs Alternative)') {
+            steps {
+                script {
+                    sh 'mvn spotbugs:spotbugs'
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: '**/target/spotbugsXml.xml', fingerprint: true
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv(SONARQUBE_SERVER) {
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=your-project-key'
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                script {
+                    timeout(time: 2, unit: 'MINUTES') {
+                        def qualityGate = waitForQualityGate()
+                        if (qualityGate.status != 'OK') {
+                            error "Pipeline failed due to quality gate failure: ${qualityGate.status}"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            junit '**/target/surefire-reports/*.xml'
+            archiveArtifacts artifacts: '**/target/*.xml, **/target/site/**', fingerprint: true
+        }
+    }
+}
+
+
+📌 Maven Plugin Configuration (pom.xml)
+
+✅ Checkstyle Configuration
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-checkstyle-plugin</artifactId>
+    <version>3.1.2</version>
+    <executions>
+        <execution>
+            <phase>verify</phase>
+            <goals>
+                <goal>checkstyle</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+✅ PMD Configuration
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-pmd-plugin</artifactId>
+    <version>3.15.0</version>
+    <executions>
+        <execution>
+            <phase>verify</phase>
+            <goals>
+                <goal>pmd</goal>
+                <goal>cpd-check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+✅ SpotBugs (FindBugs Alternative)
+
+<plugin>
+    <groupId>com.github.spotbugs</groupId>
+    <artifactId>spotbugs-maven-plugin</artifactId>
+    <version>4.7.3.0</version>
+    <executions>
+        <execution>
+            <phase>verify</phase>
+            <goals>
+                <goal>check</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+
+✅ SonarQube Plugin
+
+<plugin>
+    <groupId>org.sonarsource.scanner.maven</groupId>
+    <artifactId>sonar-maven-plugin</artifactId>
+    <version>3.9.1.2184</version>
+</plugin>

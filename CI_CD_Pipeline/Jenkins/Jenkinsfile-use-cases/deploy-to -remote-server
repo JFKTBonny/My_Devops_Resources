@@ -1,0 +1,117 @@
+stage('Deploy to Environment') {
+    steps {
+        script {
+            def serverIP = params.ENV == 'prod' ? '192.168.1.100' : '192.168.1.50' // Replace with actual IPs
+            def user = "your-user"
+            
+            echo "Deploying to ${params.ENV} on ${serverIP}..."
+
+            // Copy Kubernetes manifests or Docker Compose files to the remote server
+            sh """
+                scp -r ./k8s ${user}@${serverIP}:/home/${user}/deploy/
+                scp -r ./docker-compose.yml ${user}@${serverIP}:/home/${user}/deploy/
+            """
+
+            // Connect via SSH and deploy
+            sh """
+                ssh ${user}@${serverIP} << EOF
+                cd /home/${user}/deploy
+
+                if [ "${params.ENV}" = "prod" ]; then
+                    echo "Applying Kubernetes manifests for Production..."
+                    kubectl apply -f k8s/prod-deployment.yaml
+                else
+                    echo "Applying Kubernetes manifests for Development..."
+                    kubectl apply -f k8s/dev-deployment.yaml
+                fi
+                
+                echo "Restarting services..."
+                docker-compose down
+                docker-compose up -d --build
+                EOF
+            """
+        }
+    }
+}
+
+// 🔹 Explanation of Key Steps:
+// Define Server Details
+
+// Sets the server IP based on ENV.
+// Uses an SSH user to access the server.
+// Copy Deployment Files to the Server
+
+// Uses scp to copy the Kubernetes YAML files or Docker Compose files to the remote machine.
+// The files are placed in /home/user/deploy/.
+// SSH into the Server and Deploy
+
+// Runs kubectl apply -f <file> to apply the correct K8s manifest.
+// Stops and restarts Docker Compose to apply changes.
+
+
+Requirements for SSH Deployment:
+✅ The Jenkins server must have SSH access to the remote server (use SSH keys for authentication).
+✅ The remote server should have Docker, Docker Compose, and/or kubectl installed.
+✅ Jenkins must have permissions to run scp and ssh commands.
+
+
+// showing deployment url ...env: local or vm or bare metal
+stage('Display App URL') {
+    steps {
+        script {
+            def serverIP = params.ENV == 'prod' ? '192.168.1.100' : '192.168.1.50'
+            def appPort = "8080" // Change this to your actual app port
+            
+            echo "Application is deployed! Access it at: http://${serverIP}:${appPort}/"
+        }
+    }
+}
+
+// showing deployment url ...env: cloud providers
+stage('Display App URL') {
+    steps {
+        script {
+            def serverIP = params.ENV == 'prod' ? 'prod.example.com' : 'dev.example.com'
+            
+            echo "Fetching service details..."
+            def appURL = sh(script: "kubectl get svc my-app-service -o=jsonpath='{.status.loadBalancer.ingress[0].hostname}'", returnStdout: true).trim()
+            
+            if (appURL) {
+                echo "Application is deployed! Access it at: http://${appURL}/"
+            } else {
+                echo "Application is deployed! Access it at: http://${serverIP}/"
+            }
+        }
+    }
+}
+✅ This works if:
+Your Kubernetes service is of type LoadBalancer (e.g., AWS, GCP, Azure).
+You're using an Ingress Controller (e.g., Nginx, Traefik) with a DNS like dev.example.com.
+
+
+
+stage('Display App URL') {
+    steps {
+        script {
+            def serverIP = params.ENV == 'prod' ? '192.168.1.100' : '192.168.1.50'
+            
+            echo "Fetching public IP from remote server..."
+            def publicIP = sh(script: "ssh user@${serverIP} 'curl -s ifconfig.me'", returnStdout: true).trim()
+            
+            echo "Application is deployed! Access it at: http://${publicIP}:8080/"
+        }
+    }
+}
+// ✅ This works if:
+// The remote server is accessible from the internet.
+// The app is exposed on a known port (8080 in this case).
+
+
+
+
+
+
+
+
+
+

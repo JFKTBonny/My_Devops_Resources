@@ -1,0 +1,2 @@
+Run the command below:
+    sudo snap install jenkins --classic

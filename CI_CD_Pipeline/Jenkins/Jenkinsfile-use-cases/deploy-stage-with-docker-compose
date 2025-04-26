@@ -1,0 +1,28 @@
+stage('Deploy to Environment') {
+    steps {
+        script {
+            if (params.ENV == 'dev') {
+                echo "Deploying to Development with Docker Compose..."
+                sh """
+                    cd dev-environment
+                    docker-compose down
+                    docker-compose up -d --build
+                """
+            } else if (params.ENV == 'staging') {
+                echo "Deploying to Staging with Docker Compose..."
+                sh """
+                    cd staging-environment
+                    docker-compose down
+                    docker-compose up -d --build
+                """
+            } else if (params.ENV == 'prod') {
+                echo "Deploying to Production with Docker Compose..."
+                sh """
+                    cd prod-environment
+                    docker-compose down
+                    docker-compose up -d --build
+                """
+            }
+        }
+    }
+}

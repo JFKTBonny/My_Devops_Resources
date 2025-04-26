@@ -1,0 +1,72 @@
+# Configuring a Jenkins Static Agent Node (EC2 Instance)
+
+A static agent in Jenkins is a manually configured node that is always available for job execution. Here’s how to set up an EC2 instance as a static agent for Jenkins:
+
+Step 1: Set Up the EC2 Instance
+
+    Launch an EC2 Instance
+
+    Choose an appropriate AMI (Ubuntu, Amazon Linux, etc.).
+    Select an instance type (e.g., t2.medium).
+    Assign a security group that allows SSH (port 22) and Jenkins (port 8080).
+    Install Java (if not already installed)
+
+
+    sudo apt update && sudo apt install -y openjdk-17-jdk
+
+    Create a Jenkins User
+
+    sudo useradd -m -s /bin/bash jenkins
+
+    Set Up SSH Key Authentication (for agent connection)
+
+    Generate an SSH key pair (ssh-keygen -t rsa) on your Jenkins master.
+    Add the public key to /home/jenkins/.ssh/authorized_keys on the EC2 instance.
+Step 2: Configure the Static Agent in Jenkins
+    Go to Manage Jenkins > Manage Nodes and Clouds > New Node.
+
+    Enter Node Name, select "Permanent Agent," and click "OK."
+
+    Configure the Node:
+
+    Remote Root Directory: /home/jenkins
+    Launch method: "Launch agents via SSH"
+    Host: Public or Private IP of the EC2 instance
+    Credentials: Add the SSH key that matches the private key on the Jenkins master.
+    Click "Save" and "Launch"
+    If configured correctly, the agent should connect and be available.
+
+Step 3: Create a Jenkinsfile to Test
+    This simple Jenkins pipeline will run on the static agent to verify that the setup works.
+
+    Jenkinsfile
+
+    pipeline {
+        agent {
+            label 'ec2-static-agent'
+        }
+        stages {
+            stage('Check Environment') {
+                steps {
+                    sh 'whoami'
+                    sh 'java -version'
+                }
+            }
+            stage('Build') {
+                steps {
+                    sh 'echo "Building project on EC2 static agent"'
+                }
+            }
+            stage('Test') {
+                steps {
+                    sh 'echo "Running tests on EC2 static agent"'
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    sh 'echo "Deploying application from EC2 static agent"'
+                }
+            }
+        }
+    }
+

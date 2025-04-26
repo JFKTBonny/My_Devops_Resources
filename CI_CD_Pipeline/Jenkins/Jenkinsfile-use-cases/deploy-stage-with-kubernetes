@@ -1,0 +1,24 @@
+stage('Deploy to Environment') {
+    steps {
+        script {
+            if (params.ENV == 'dev') {
+                echo "Deploying to Development on Kubernetes..."
+                sh """
+                    kubectl apply -f k8s/dev-deployment.yaml
+                """
+            } else if (params.ENV == 'staging') {
+                echo "Deploying to Staging on Kubernetes..."
+                sh """
+                    kubectl apply -f k8s/staging-deployment.yaml
+                """
+            } else if (params.ENV == 'prod') {
+                echo "Deploying to Production on Kubernetes..."
+                sh """
+                    kubectl apply -f k8s/prod-deployment.yaml
+                """
+            }
+        }
+    }
+}
+
+// Make sure Jenkins has kubectl installed and is authenticated with your Kubernetes cluster.

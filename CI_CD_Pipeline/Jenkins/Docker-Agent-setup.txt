@@ -1,0 +1,48 @@
+Steps to Configure Jenkins Docker Agent:
+
+Ensure Jenkins Has Docker Plugin installed
+
+Go to Jenkins Dashboard > Manage Jenkins > Manage Plugins
+Install the "Docker" and "Docker Pipeline" plugins
+Configure Jenkins Docker Agent
+
+Go to Manage Jenkins > Manage Nodes and Clouds > Configure Clouds
+Add a new Docker Cloud
+Set up Docker Host URL (e.g., unix:///var/run/docker.sock)
+Add a Docker Agent Template
+Use an image like jenkins/inbound-agent or jenkins/ssh-agent
+Ensure Jenkins User Can Access Docker
+
+Add Jenkins user to the Docker group:
+
+    sudo usermod -aG docker jenkins
+Restart Jenkins:
+
+    sudo systemctl restart jenkins
+Jenkinsfile for Testing Jenkins Docker Agent
+This pipeline will run inside a Docker container (maven:3.8.6-openjdk-11) and execute a simple build.
+
+    pipeline {
+        agent {
+            docker {
+                image 'maven:3.8.6-openjdk-11'
+            }
+        }
+        stages {
+            stage('Build') {
+                steps {
+                    sh 'mvn --version'
+                }
+            }
+            stage('Test') {
+                steps {
+                    sh 'echo "Running tests..."'
+                }
+            }
+            stage('Deploy') {
+                steps {
+                    sh 'echo "Deploying application..."'
+                }
+            }
+        }
+    }

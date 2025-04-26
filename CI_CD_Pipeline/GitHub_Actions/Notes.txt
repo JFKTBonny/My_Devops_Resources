@@ -1,0 +1,96 @@
+################################# Github_Actions ###################################################
+
+GitHub Actions is a powerful CI/CD (Continuous Integration and Continuous Deployment) automation tool built into GitHub.
+
+1. Workflows, Jobs, and Steps
+    -- A workflow is an automated process defined in a YAML file inside .github/workflows/.
+    -- A workflow contains jobs, which run in parallel or sequentially.
+    -- Each job has steps, which are the individual commands or actions executed.
+
+2. Triggers
+    Workflows are triggered by events, such as:
+        -- push or pull_request
+        -- schedule (cron jobs)
+        -- workflow_dispatch (manual trigger)
+        -- repository_dispatch (external event)
+
+3. Runners
+    Workflows run on GitHub-hosted runners (Linux, Windows, macOS) or self-hosted runners (custom environments).
+    Default runners include common tools like:
+                               - Node.js 
+                               - Python
+                               - Docker
+
+4. Actions
+    Actions are reusable units inside workflows.
+    You can use: " official actions... third-party actions... or custom actions " from the GitHub Marketplace.
+        Example: 
+             - "actions/checkout" is commonly used to clone a repo.
+
+5. YAML Syntax Basics
+    Example:
+       -  workflow (.github/workflows/example.yml):
+
+
+        name: CI Workflow
+        on: push  # Runs on every push
+        jobs:
+        build:
+            runs-on: ubuntu-latest
+            steps:
+            - name: Checkout repository
+                uses: actions/checkout@v4
+
+            - name: Set up Node.js
+                uses: actions/setup-node@v4
+                with:
+                node-version: 20
+
+            - name: Install dependencies
+                run: npm install
+
+            - name: Run tests
+                run: npm test
+
+
+6. Secrets and Environment Variables
+    Store sensitive data in GitHub Secrets (Settings > Secrets).
+    Access them inside workflows:
+
+        env:
+        API_KEY: ${{ secrets.API_KEY }}
+
+7. Caching and Artifacts
+    Cache dependencies to speed up workflows:
+
+        uses: actions/cache@v3
+        with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        Artifacts allow saving and downloading workflow outputs:
+
+        uses: actions/upload-artifact@v3
+        with:
+        name: my-artifact
+        path: path/to/file
+
+8. Matrix Builds
+    Run tests on multiple environments:
+
+        strategy:
+        matrix:
+            node-version: [14, 16, 18]
+
+9. Deployment with GitHub Actions
+    Deploy to AWS, Azure, Firebase, or GitHub Pages using actions like:
+
+        uses: peaceiris/actions-gh-pages@v3
+10. Debugging
+    Use run: echo $GITHUB_ENV to inspect variables.
+    Enable debug logging with ACTIONS_STEP_DEBUG=true in secrets.
+
+Why GitHub Actions?
+    ✅ Built into GitHub
+    ✅ Free for public repositories
+    ✅ Supports Docker and containerized workflows
+    ✅ Flexible automation for testing, CI/CD, and more

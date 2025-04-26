@@ -1,0 +1,42 @@
+
+####################################### Build Variables ######################################
+    BUILD_NUMBER:                   Used for tagging builds and artifacts uniquely.
+    BUILD_ID:                       Identical to BUILD_NUMBER, used for logging and reporting.
+    BUILD_DISPLAY_NAME:             Can be modified to provide more readable names.
+    BUILD_TAG:                      Useful for versioning artifacts.
+    BUILD_URL:                      Can be shared in notifications or logs for build tracking. 
+
+####################################### Project Variables ####################################
+    JOB_NAME:                       Helps in differentiating jobs when using shared scripts.
+    JOB_BASE_NAME:                  Useful when working with multi-branch pipelines.
+    JOB_URL:                        Used in notifications and logs for quick job access.
+
+####################################### Workspace Variables #####################################
+    WORKSPACE:                          Used to locate build files and artifacts.
+    WORKSPACE_TMP:                      A temporary directory for storing intermediate build files.
+
+######################################## Node Variables ##########################################
+    NODE_NAME: Helps in determining where the build is running (agent/master).
+    NODE_LABELS: Used to dynamically assign builds to specific nodes.
+    EXECUTOR_NUMBER: Useful in parallel execution or logging.
+
+######################################## SCM Variables ###########################################
+    GIT_COMMIT: Used for tracking the exact version of the code being built.
+    GIT_PREVIOUS_COMMIT: Helps in comparing changes between builds.
+    GIT_BRANCH: Used in CI/CD to validate branch-based deployments.
+    GIT_URL: Helps in cloning and referencing repositories.
+
+######################################### Trigger Variables #######################################
+    BUILD_CAUSE: Identifies if the build was triggered manually or automatically.
+    BUILD_USER: Helps in tracking who triggered the build.
+    BUILD_USER_ID: Useful for audit logs.
+
+######################################### Jenkins Instance Variables ###############################
+    JENKINS_HOME: Useful for managing Jenkins storage and backups.
+    JENKINS_URL: Used in notifications for linking back to Jenkins.
+    JENKINS_PORT: Useful in configuring network-based interactions.
+
+######################################### Environment Variables #####################################
+    PATH+EXTRA: Extends system PATH dynamically.
+    JAVA_HOME: Ensures correct Java version is used.
+    MAVEN_HOME: Ensures correct Maven installation is used.
