@@ -1,0 +1,57 @@
+############################# Cut Command:
+
+Purpose:
+    cut extracts specific columns, fields, or characters from lines of text.
+    It’s super useful for slicing data out of structured files (like CSVs, /etc/passwd, etc.).
+
+Key Options 
+
+    -d	Delimiter (what separates fields)	-d':' (colon) or -d',' (comma)
+    -f	Fields (which column(s) to extract)	-f1 (first field), -f1,3 (fields 1 and 3)
+    -c	Characters (which characters to extract)	-c1-5 (first 5 characters)
+
+Common Usage Examples:
+
+1. Cut fields by delimiter
+Extract the first field (username) from /etc/passwd (colon : separated):
+    cut -d':' -f1 /etc/passwd
+
+        -d':' → delimiter is colon
+        -f1 → first field (username)
+
+
+
+
+2. Cut multiple fields
+Extract username and home directory from /etc/passwd:
+    cut -d':' -f1,6 /etc/passwd
+
+        (Username = field 1, Home directory = field 6)
+
+
+
+3. Cut characters
+Get the first 10 characters of each line in a file:
+    cut -c1-10 filename.txt
+
+
+4. Pipe + Cut
+Often you use cut with other commands:
+Extract the first 10 characters from the output of ps aux.
+    ps aux | cut -c1-10
+
+Quick Tips:
+    cut is very fast because it’s a simple tool (but it can be limited if input is messy).
+
+    If your text has irregular spaces, cut might struggle — for complex cases, awk is more powerful.
+
+    If you need the last field, awk is better, because cut doesn't have "last" support natively.
+
+In Short:
+    Use cut -d'DELIM' -fN to extract fields
+
+    Use cut -cN to extract characters
+
+    Use cut when the data is clean and well-structured
+
+

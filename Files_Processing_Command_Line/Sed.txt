@@ -1,0 +1,57 @@
+############### Sed Command:
+
+Purpose:
+    sed (Stream Editor) is used to search, replace, insert, or delete text in a stream (file or stdin).
+    It is fast and acts like a one-line edits without opening a text editor!
+
+Key Concepts :
+    Substitute (s) means 	"Search and replace text"...example: s/old/new/
+    Delete (d) means	"Delete matching lines"...example:	/pattern/d
+    Insert (i) means   "Insert text before a line"...example: 	/pattern/i\ New text
+
+
+Common Usage Examples:
+    1. Simple find and replace
+        Replace "apple" with "banana" in the whole file:
+            sed 's/apple/banana/' filename
+            (only first occurrence per line)
+
+        To replace all occurrences in each line:
+            sed 's/apple/banana/g' filename
+            (g = global)
+
+
+    2. Delete lines matching a pattern
+        Delete lines containing "DEBUG":
+            sed '/DEBUG/d' logfile.txt
+
+
+    3. Replace text in-place (edit the file directly)
+        Modify the original file:
+            sed -i 's/foo/bar/g' filename
+                -i = in-place edit (be careful!).
+
+
+
+    4. Insert or append text
+        Insert "HELLO" before any line containing "World":
+            sed '/World/i\HELLO' filename
+
+
+Quick Tips:
+    sed reads line-by-line, and applies your rule(s).
+
+    Always quote your sed commands to avoid shell problems.
+
+    sed is perfect for simple automated edits (especially in CI/CD pipelines!).
+
+
+
+    
+cut	is a Simple field/character extraction... example:	cut -d':' -f1,2
+awk	is a Smart field-based processing & calculations...example:	awk '{print $1}' file
+sed	is good for Searching & replacing, inserting, and deleting text
+
+
+    
+

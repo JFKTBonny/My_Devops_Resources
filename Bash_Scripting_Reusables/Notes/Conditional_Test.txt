@@ -1,0 +1,141 @@
+#####################   Basic Syntax:
+
+The general syntax for a conditional test is:
+
+            if [ condition ]; then
+                # commands to execute if condition is true
+            else
+                # commands to execute if condition is false
+            fi
+
+Common Conditional Tests:
+
+    1-String Comparison:
+
+        - Check if two strings are equal:
+
+            if [ "$string1" = "$string2" ]; then
+                echo "Strings are equal."
+            fi
+
+        - Check if a string is empty:
+
+            if [ -z "$string" ]; then
+                echo "String is empty."
+            fi
+
+    2-Numeric Comparison:
+
+        - Check if two numbers are equal:
+
+            if [ "$num1" -eq "$num2" ]; then
+                echo "Numbers are equal."
+            fi
+
+        - Check if one number is greater than another:
+
+            if [ "$num1" -gt "$num2" ]; then
+                echo "$num1 is greater than $num2."
+            fi
+
+    3-File Tests:
+
+        - Check if a file exists:
+
+            if [ -e "file.txt" ]; then
+                echo "File exists."
+            fi
+
+        - Check if it is a directory:
+
+            if [ -d "directory_name" ]; then
+                echo "It is a directory."
+            fi
+
+    4-Combining Conditions:
+        You can use && (AND) and || (OR) to combine conditions.
+
+            - AND:
+
+                if [ -e "file.txt" ] && [ -r "file.txt" ]; then
+                    echo "File exists and is readable."
+                fi
+
+            - OR:
+
+                if [ "$num1" -lt 10 ] || [ "$num2" -lt 10 ]; then
+                    echo "At least one number is less than 10."
+                fi
+
+
+
+
+Example:
+
+        #!/bin/bash
+        read -p "Enter a string: " input_string
+        read -p "Enter a number: " input_number
+
+        # String test
+        if [ -z "$input_string" ]; then
+            echo "You entered an empty string."
+        else
+            echo "You entered: $input_string"
+        fi
+
+        # Numeric test
+        if [ "$input_number" -gt 100 ]; then
+            echo "The number is greater than 100."
+        elif [ "$input_number" -eq 100 ]; then
+            echo "The number is equal to 100."
+        else
+            echo "The number is less than 100."
+        fi
+
+        # File test
+        if [ -e "example.txt" ]; then
+            echo "example.txt exists."
+        else
+            echo "example.txt does not exist."
+        fi
+
+ In Bash scripting, using double brackets [[ ... ]] is not mandatory, 
+ but it provides some advantages over single brackets [ ... ]. 
+
+Single Brackets [ ... ]
+    Basic Syntax:
+
+        if [ condition ]; then
+            # commands
+        fi
+        
+    String Comparison:  Requires = for equality and != for inequality.
+    Operators: You need to use specific escape sequences for logical operators (-a, -o).
+    Word Splitting: Can be affected by whitespace and special characters.
+
+Double Brackets [[ ... ]]
+    More Flexible Syntax:
+
+            if [[ condition ]]; then
+                # commands
+            fi
+
+    String Comparison: Uses == for equality and != for inequality, which makes it more intuitive.
+    Logical Operators: You can use && and || directly without escaping.
+    No Word Splitting: Safer handling of strings with spaces or special characters.
+        
+Example:
+      Using single brackets:
+
+        if [ "$string1" = "$string2" ]; then
+            echo "Strings are equal."
+        fi
+
+    Using double brackets:
+
+        if [[ $string1 == $string2 ]]; then
+            echo "Strings are equal."
+        fi
+            
+
+

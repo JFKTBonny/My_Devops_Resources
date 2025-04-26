@@ -1,0 +1,32 @@
+######################## Tee Command:
+
+Purpose:
+    tee reads input and writes it both to stdout (screen) and a file — perfect for logging while seeing output live.
+
+Key Options: 
+    -a	Append instead of overwrite	tee -a logfile.txt
+
+
+Common Usage Examples:
+    1. Save and display output
+        command | tee output.txt
+            Saves output to output.txt
+            Still shows output on screen
+
+
+
+    2. Append output instead of overwriting
+        command | tee -a output.txt
+
+    3. Chain tee in scripts
+        Capture logs without losing the ability to watch them:
+            my_script.sh | tee script.log
+
+
+Quick Tips:
+    Without -a, tee overwrites the file.
+
+    You can tee into multiple files:
+        command | tee file1.txt file2.txt
+
+

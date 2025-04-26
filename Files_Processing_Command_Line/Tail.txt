@@ -1,0 +1,32 @@
+################## Tail Command;
+
+Purpose:
+    tail displays the last lines of a file or input — commonly used for logs and monitoring.
+
+Key Options:
+    -n	Show specific number of lines	-n 20 (last 20 lines)
+    -f	Follow new lines as the file grows	-f (live monitor a log file)
+
+
+Common Usage Examples:
+    1. Show the last 10 lines (default)
+        tail filename.log
+
+    2. Show the last 50 lines
+        tail -n 50 filename.log
+
+    3. Live monitoring a file (great for logs)
+        tail -f /var/log/syslog
+        (Press Ctrl+C to stop.)
+
+
+    4. Live monitor + show last 20 lines
+        tail -n 20 -f /var/log/syslog
+
+Quick Tips:
+    tail -f is your best friend for debugging real-time output.
+
+    Combine with grep to monitor for specific events:
+        tail -f logfile.log | grep "ERROR"
+
+

@@ -1,0 +1,47 @@
+##################### Awk Command:
+
+Purpose:
+    awk is a powerful text processing tool used to analyze and transform structured text line-by-line.
+    awk acts like as a mini programming language for fields and patterns.
+
+
+Key Concepts: 
+    Records	are Lines (\n separated)...example:	Each line = one record
+    Fields are 	Words within a line (default: space/tab)...example:	$1, $2, ..., $NF (NF = Number of Fields)
+    Pattern is  a Condition to match...example:	/error/ { print $0 } prints lines with "error"
+
+
+Common Usage Examples:
+    1. Print specific fields
+        Print the first field from each line:
+            awk '{print $1}' filename
+                $1 = first field, $2 = second field, $0 = entire line
+
+
+
+2. Use custom delimiters
+    For a colon-separated file like /etc/passwd:
+        awk -F':' '{print $1, $6}' /etc/passwd
+            -F':' → sets colon : as the field separator.
+
+
+
+3. Print lines matching a pattern
+    Print only lines containing the word "error":
+        awk '/error/ {print $0}' logfile.txt
+            /pattern/ {action} is the basic awk syntax.
+
+
+
+4. Do math
+    Sum numbers from a column (example: adding column 2):
+        awk '{sum += $2} END {print sum}' filename
+
+
+Quick Tips:
+    Default field separator = any whitespace (space, tabs).
+
+    Use -F to change the separator.
+
+    awk is great for report generation, simple calculations, and filtering.
+

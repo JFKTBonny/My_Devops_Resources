@@ -1,0 +1,40 @@
+#################     Special Variables:
+
+$0: The name of the script being executed.
+
+$#: The number of positional parameters (arguments) passed to the script.
+
+
+$*: All the positional parameters as a single word. If there are no arguments, it expands to an empty string.
+
+
+$@: All the positional parameters as separate words. This is useful when you want to loop through arguments.
+
+
+$1, $2, ... $N: The individual positional parameters. For example, $1 is the first argument, $2 is the second, and so on.
+
+
+$?: The exit status of the last command executed. A value of 0 typically means success, while any non-zero value indicates an error.
+
+
+$$: The process ID (PID) of the current shell. This can be useful for creating unique temporary files.
+
+
+$!: The process ID of the last background command executed. Useful for tracking background jobs.
+
+
+$-: The current options set for the shell. This can show you if certain options (like -x for debugging) are enabled.
+
+
+Example:
+        #!/bin/bash
+
+        echo "Script name: $0"
+        echo "Number of arguments: $#"
+        echo "All arguments as a single word: $*"
+        echo "All arguments as separate words:"
+        for arg in "$@"; do
+            echo "$arg"
+        done
+        echo "Exit status of the last command: $?"
+        echo "Process ID of the current shell: $$"   
