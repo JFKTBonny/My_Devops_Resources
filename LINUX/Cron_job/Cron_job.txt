@@ -1,0 +1,46 @@
+📌 Cron Syntax Breakdown
+A basic cron job has the format:
+
+
+        * * * * *  command-to-be-executed
+        │ │ │ │ │
+        │ │ │ │ └───── Day of the week (0 - 7) (Sunday = 0 or 7)
+        │ │ │ └──────── Month (1 - 12)
+        │ │ └──────────── Day of the month (1 - 31)
+        │ └──────────────── Hour (0 - 23)
+        └──────────────────── Minute (0 - 59)
+
+You can use:
+
+        * for "every value"
+
+        / for intervals (e.g., */5 = every 5 units)
+
+        , to list values
+
+        - to set a range
+
+
+🔍Example Cron Job: 00 */12 * * 0
+
+        Field	         Value	                  Meaning
+
+        Minute	          00	                 At minute 0
+        Hour	         */12	                 Every 12 hours (0 and 12)
+        Day of Month	  *	                     Every day
+        Month	          *	                     Every month
+        Day of Week	      0	                     Only on Sunday
+
+
+🧠 How It Works:
+        Runs twice every Sunday (once at midnight, once at noon).
+        Will not run on other days of the week.
+
+
+
+💡 Example Use Case
+Let's say you're a server admin, and you want to:
+Reboot a service or run a script every Sunday morning and afternoon.
+
+
+

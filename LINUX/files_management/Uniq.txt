@@ -1,0 +1,28 @@
+The uniq command is used to filter out or show repeated lines in a file. 
+It works best when the input is sorted, because it only removes adjacent duplicates.
+
+     🛠️ Basic Syntax:
+
+uniq [options] [input_file] [output_file]
+
+📌 Common Options:
+
+    -c → Prefix lines by the number of occurrences.
+
+    -d → Show only duplicate lines.
+
+    -u → Show only unique (non-repeated) lines.
+
+    -i → Ignore case when comparing.
+
+    -f N → Ignore first N fields when comparing.
+
+    -s N → Ignore first N characters when comparing.
+
+🧪 Examples:
+
+uniq sorted.txt               # Remove adjacent duplicates
+sort file.txt | uniq          # Typical usage: remove all duplicates
+uniq -c names.txt             # Count occurrences
+uniq -d data.txt              # Show only duplicate lines
+uniq -u list.txt              # Show only unique lines

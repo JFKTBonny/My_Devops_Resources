@@ -1,0 +1,50 @@
+#### Network Admin/system Admin assigns the IP address to the machines when the Organizations switch 
+from dynamic control protocol(dynamic addressing scheme) to static IP adress scheme...
+That can be done following the methods or Options  below:
+          - Option1: using netplan
+          - Option2: using NetworkManager
+         
+     *** Check which system you are using by running: ls /etc/netplan
+          If you see files like 01-netcfg.yaml or 00-installer-config.yaml, you're using Netplan. 
+
+        - Option1: Using Netplan
+           - find  your netplan config file:  ls /etc/netplan/   ... 
+           - edit your netplan config file:  vim  01-netcfg.yaml (for instance)
+           It content should look like below:
+
+            network:
+                version: 2
+                renderer: networkd
+                ethernets:
+                    enp3s0:  # <-- this is your network interface, yours might be different (e.g., eth0)
+                    dhcp4: no
+                    addresses: [192.168.1.100/24]
+                    gateway4: 192.168.1.1
+                    nameservers:
+                        addresses: [8.8.8.8, 8.8.4.4]
+
+            - find your interface name by running: ip link            
+            - Replace enp3s0 with your interface name 
+            - Change the IP, gateway, and DNS as needed...
+            - Apply changes by running: sudo netplan apply
+            - verify by running: ip a
+
+        - Option2: Using NetworkManager
+            - Using nmcli
+              1- get your connection name by running: nmcli connection show
+              2- set a static IP (replace "YOU_CONN_NAME" and values) in the below command:
+
+              nmcli connection modify "YOUR_CONN_NAME" ipv4.method manual ipv4.addresses 192.168.1.100/24 ipv4.gateway 192.168.1.1 ipv4.dns "8.8.8.8 8.8.4.4"
+
+              3- Bring the connaction down and up by running:
+
+                    nmcli connection down "YOUR_CONN_NAME"
+                    nmcli connection up "YOUR_CONN_NAME"
+
+              4- verify by running: ip a
+NB: an alternative is to use the graphical interface instead of command line by running:  "nmtui" in the terminal...
+
+
+
+                
+

@@ -1,0 +1,74 @@
+############################# Email:
+You can send emails like reports, script logs and status, documents from Linux command line.
+
+Prerequisites:
+    SMTP server credentials:
+    If you don't have SMTP server, you can also use:
+        -  Gmail
+        -  Outlook
+        - Yahoo SMTP credentials with your email account and password.
+
+    GMail SMTP:
+        Server Address: smtp.gmail.com
+        Port (TLS): 587
+        Port (SSL): 465
+        Username: Your Gmail Email Address
+        Password: Your Gmail Password
+        SMTP TLS/SSL required: yes
+
+    Outlook/Hotmail SMTP:
+        Server Address: smtp-mail.outlook.com
+        Port Number: 587 (With TLS)
+        Alternative Port Number: 25 (Without TLS/SSL)
+        Username: Your Outlook Email Address
+        Password: Your Outlook Password
+
+    Yahoo SMTP:
+        Server Address: smtp.mail.yahoo.com
+        Port Number: 465 (With SSL)
+        Alternative Port Number: 587 (With TLS)
+        Username: Your Yahoo Email Address
+        Password: Your Yahoo Password
+
+There are various tools which you can install to send emails from the command line:
+       - ssmtp
+       - mailx
+       - postfix
+
+In this chapter, we are going to install and configure ssmtp to send emails from command line.
+*** Install msmtp and mailutils:
+            sudo apt update
+            sudo apt install msmtp msmtp-mta mailutils
+
+
+*** Create Configuration File "~/.msmtprc" with the content below:
+
+        defaults
+        auth           on
+        tls            on
+        tls_trust_file /etc/ssl/certs/ca-certificates.crt
+        logfile        ~/.msmtp.log
+
+        account        gmail
+        host           smtp.gmail.com
+        port           587
+        from           jofranco1203@gmail.com
+        user           jofranco1203@gmail.com
+        password       xzlo vnhu pdtv xwqf (this your app password provided by google for authentication...)
+
+        account default : gmail     
+
+*** Secure the Config File:  chmod 600 ~/.msmtprc 
+    
+***  Test Email Send:   echo "This is a test email." | mail -s "Test Subject" santonix@hotmail.it
+ 
+                    
+         
+
+
+    
+
+
+
+
+

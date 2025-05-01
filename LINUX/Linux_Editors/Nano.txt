@@ -1,0 +1,48 @@
+########################## Cheat Sheet:
+
+=====================
+     NANO CHEAT SHEET
+=====================
+
+--- OPENING & CLOSING ---
+nano FILENAME     = Open or create file
+Ctrl+O            = Save (Write Out)
+Ctrl+X            = Exit (Prompt to save if modified)
+Ctrl+T            = Invoke file browser or spell checker
+
+--- BASIC NAVIGATION ---
+Ctrl+A            = Move to beginning of line
+Ctrl+E            = Move to end of line
+Ctrl+Y            = Scroll up a page
+Ctrl+V            = Scroll down a page
+Ctrl+_            = Go to line and column (Ctrl+_ then type line#)
+Alt+/             = Go to end of file
+Alt+\             = Go to beginning of file
+
+--- TEXT EDITING ---
+Ctrl+K            = Cut (entire) line
+Ctrl+U            = Paste
+Ctrl+J            = Justify (reformat) paragraph
+Ctrl+D            = Delete character under cursor
+Alt+6             = Copy current line (use Ctrl+U to paste)
+
+--- SEARCH & REPLACE ---
+Ctrl+W            = Search (Find)
+Ctrl+\            = Search and replace
+Alt+W             = Repeat last search
+
+--- INDENTATION ---
+Alt+]             = Indent line
+Alt+[             = Un-indent line
+
+--- OTHER USEFUL ---
+Ctrl+C            = Show current line/column position
+Ctrl+G            = Show help
+Ctrl+L            = Refresh/redraw screen
+Ctrl+T            = Spell check (if available)
+Alt+U             = Undo
+Alt+E             = Redo
+
+--- SAVING ---
+Ctrl+O            = Write (save) file
+Enter             = Confirm filename

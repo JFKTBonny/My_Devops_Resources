@@ -1,0 +1,46 @@
+############################## Linux Processes:
+
+    Linux is a multitasking operating system. 
+    Linux creates a process whenever a program is launched, either by user or by OS itself.
+    If a process runs and terminates properly, then everything is fine. 
+    If not, You need to manage the processes by commands.
+    If we would like to get a snapshot of what is currently happening on the system we may use a program called "top".
+
+Types of processes:
+    - Foreground: They run on the screen and need input from the user.
+    - Background: They run in the background and usually do not need user input.
+
+process management commands:
+
+    To display the currently working processes:
+        ps
+
+    Display all processes: ps ax  or   ps -ef  or ps aux
+       
+
+   
+    Display process by user:   ps -f -u ops
+      
+    Show process by name:     ps -C metacity
+    
+    Show process by process id:   ps -f -p 2609,2704,2585
+    
+    Show process by using grep (searching):  ps -ef | grep "metacity"
+    
+    Show process by sorting on cpu usage percentage:   ps aux --sort=-pcpu,+pmem |head
+    
+    Customizing the ps output format:    ps -eo uname,pid,start_time,time,args | head
+   
+    top Display all running process:    top
+   
+    kill pid terminate a process:  kill -9 2895
+   
+    Kill all the process named proc:    killall -9 firefox
+    
+    Kill all processes matching the pattern:   pkill -USR1 sample
+    
+    List stopped or background jobs, resume a stopped job in the background:    bg
+   
+    Brings the most recent job to foreground:  fg
+    
+

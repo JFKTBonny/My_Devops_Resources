@@ -1,0 +1,27 @@
+🔹 find (File Search)
+find is used to search for files/directories in a directory hierarchy based on conditions 
+like name, size, type, modified time, etc.
+
+🛠️ Syntax:
+
+        find [path] [options]
+
+📌 Common Options:
+
+        -name → Match by name
+
+        -type → File type (f for file, d for directory)
+
+        -size → Match by size
+
+        -mtime → Modified time
+
+        -exec → Run commands on found items
+
+🧪 Examples:
+
+        find . -name "*.txt"                  # Find all .txt files
+        find /home -type d                   # Find directories
+        find . -size +100M                   # Files larger than 100MB
+        find . -mtime -7                     # Modified in the last 7 days
+        find . -name "*.log" -exec rm {} \;  # Delete all .log files

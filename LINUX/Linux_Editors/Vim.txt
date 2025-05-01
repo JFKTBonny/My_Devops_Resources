@@ -1,0 +1,76 @@
+############## cheat sheet
+
+====================
+      VIM CHEAT SHEET
+====================
+
+--- BASIC MODES ---
+i        = Insert mode
+Esc      = Normal mode
+v        = Visual mode (character)
+V        = Visual mode (line)
+Ctrl+v   = Visual block mode
+:        = Command-line mode
+
+--- FILE OPERATIONS ---
+:w       = Save
+:q       = Quit
+:wq      = Save and quit
+:q!      = Quit without saving
+:e FILE  = Open FILE
+:! CMD   = Run shell CMD
+
+--- CURSOR MOVEMENT ---
+h j k l  = Left, Down, Up, Right
+0        = Start of line
+^        = First non-blank of line
+$        = End of line
+gg       = Go to top of file
+G        = Go to bottom of file
+:n       = Go to line n
+Ctrl+d   = Scroll half-page down
+Ctrl+u   = Scroll half-page up
+
+--- EDITING TEXT ---
+x        = Delete character under cursor
+dd       = Delete current line
+yy       = Yank (copy) line
+p        = Paste after cursor
+P        = Paste before cursor
+u        = Undo
+Ctrl+r   = Redo
+r<CHAR>  = Replace character
+cw       = Change word
+cc       = Change entire line
+
+--- SEARCHING ---
+/word    = Search forward for "word"
+?word    = Search backward for "word"
+n        = Repeat search forward
+N        = Repeat search backward
+:%s/old/new/g = Replace all "old" with "new"
+
+--- VISUAL MODE BLOCKS ---
+v        = Start visual (character)
+V        = Start visual (line)
+Ctrl+v   = Start visual (block)
+d        = Delete selected
+y        = Yank selected
+>        = Indent
+<        = Un-indent
+
+--- WINDOWS & TABS ---
+:split              = Horizontal split
+:vsplit             = Vertical split
+Ctrl+w + arrow key  = Move between splits
+:tabnew             = Open new tab
+gt / gT             = Next / previous tab
+
+--- EXITING ---
+:wq or ZZ  = Save and quit
+:q!        = Quit without saving
+
+--- MISC ---
+.        = Repeat last change
+:set nu  = Show line numbers
+:set rnu = Relative line numbers

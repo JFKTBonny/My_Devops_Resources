@@ -1,0 +1,22 @@
+🔹 sed (Stream Editor)
+sed is used to search, find and replace, insert, or delete lines in a text file or input stream.
+It works line-by-line and supports regular expressions.
+
+🛠️ Syntax:
+
+        sed [options] 'command' file
+
+📌 Common Uses:
+
+        Substitution (s/old/new/)
+
+        Deleting lines (d)
+
+        Inserting/appending text (i, a)
+
+🧪 Examples:
+
+        sed 's/apple/orange/' file.txt       # Replace first 'apple' with 'orange' per line
+        sed 's/apple/orange/g' file.txt      # Replace all 'apple' with 'orange'
+        sed '/error/d' file.txt              # Delete lines containing "error"
+        sed '2a\New line' file.txt           # Append a line after line 2

@@ -1,0 +1,19 @@
+The paste command is used to merge lines of files horizontally (side by side), 
+by default separated with a tab.
+
+🛠️ Syntax:
+
+        paste [options] file1 file2 ...
+
+
+📌 Common Options:
+
+        -d → Specify a custom delimiter (e.g., comma, colon).
+
+        -s → Paste serially (line after line, not column-wise).
+
+🧪 Examples:
+
+        paste file1.txt file2.txt          # Merge files line by line
+        paste -d ',' file1 file2           # Merge with comma as separator
+        paste -s file.txt                  # Merge lines into one line

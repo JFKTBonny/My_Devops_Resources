@@ -1,0 +1,61 @@
+############################ Remote connections:
+
+There are many ways to access a shell remotely. 
+One of the older ways is to use the telnet program, which is available on most network capable operating systems.
+Accessing shell account through the telnet is not secure because:
+   -  everything that you send and receive over the telnet method is visible in an plain text on your local network.
+
+For this reason, you need a more secure program than telnet to connect to remote host:
+
+         - Secure Shell (SSH):
+    SSH is an open source and most trusted network protocol for operating network services securely over an unsecured network.
+    The SSH protocol is a method for secure remote login from one computer to another. 
+    It is also used to transfer files from one computer to another computer over the network using secure copy (SCP) Protocol.
+
+# Secure Remote Connections & File Transfers
+
+## Remote Shell Access
+
+Avoid using telnet for remote shell access — it transmits data in plain text, making it insecure.
+
+Use SSH (Secure Shell) instead:
+- Encrypted remote login protocol
+- Supports secure file transfers (SCP/SFTP)
+- Commonly used for:
+  - Secure user access
+  - Automated scripts
+  - Remote command execution
+  - Network/system administration
+
+### SSH Configuration
+- Config file: /etc/ssh/sshd_config
+- Daemon: sshd
+
+### Generate SSH Key Pair
+ssh-keygen
+
+### Copy Public Key to Remote Host
+ssh-copy-id -i ~/.ssh/id_rsa.pub user@remote_ip
+
+# File & Directory Synchronization with rsync
+
+## Local File Sync
+rsync -zvh backup.tar /tmp/backups/
+rsync -avzh /root/rpmpkgs/ /tmp/backups/
+
+## Local to Remote Sync
+rsync -avz rpmpkgs/ root@192.168.150.133:/home/
+
+## Remote to Local Sync
+rsync -avzh root@192.168.150.133:/root/rpmpkgs /tmp/myrpms
+
+## Send File from Local to Remote via SSH
+rsync -avzhe ssh backup.tar root@192.168.150.133:/backups/
+
+
+
+
+
+
+
+

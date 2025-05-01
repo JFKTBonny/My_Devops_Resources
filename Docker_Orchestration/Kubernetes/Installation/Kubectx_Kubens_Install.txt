@@ -1,0 +1,21 @@
+# on linux os
+# Download kubectx and kubens(This will make both kubectx and kubens available for use.)
+    git clone https://github.com/ahmetb/kubectx.git ~/.kubectx
+
+# Add kubectx to your PATH
+    echo 'export PATH=$PATH:$HOME/.kubectx' >> ~/.bashrc
+    source ~/.bashrc
+
+# using go (when you have go installed)
+    go install github.com/ahmetb/kubectx/kubectx@latest
+    go install github.com/ahmetb/kubectx/kubens@latest
+
+# on windows
+    scoop install kubectx
+
+# to list available context
+    kubectx
+
+# to switch to a specific context
+    kubectx <context-name>  # context refers to the cluster and sometimes to the cluster name...
+

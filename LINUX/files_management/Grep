@@ -1,0 +1,27 @@
+The grep command is used to search for patterns (using regular expressions) in files or input.
+
+🛠️ Syntax:
+
+         grep [options] pattern [file...]
+         
+📌 Common Options:
+
+        -i → Ignore case.
+
+        -v → Invert match (show lines that do not match).
+
+        -r → Recursive search in directories.
+
+        -n → Show line numbers.
+
+        -l → Show only file names with matches.
+
+        -E → Use extended regex (like egrep).
+
+🧪 Examples:
+
+       grep "hello" file.txt                # Find "hello"
+       grep -i "error" logs.txt             # Case-insensitive search
+       grep -v "done" file.txt              # Show lines not containing "done"
+       grep -r "TODO" ./src                 # Search recursively in folder
+       grep -n "main" code.c                # Show line numbers with "main"

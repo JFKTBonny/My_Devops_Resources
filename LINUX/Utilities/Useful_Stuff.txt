@@ -1,0 +1,12 @@
+To reset UFW:    sudo ufw reset
+
+View all running services:  systemctl list-units --type=service --state=running
+
+To see all services (running, exited, failed, etc.):  systemctl list-units --type=service
+
+For a more compact and full status view:   service --status-all
+
+To list only programs installed via apt, use:   apt list --installed  or  dpkg -l
+
+To check if a specific package was installed via apt:   dpkg -s <package-name>
+ 

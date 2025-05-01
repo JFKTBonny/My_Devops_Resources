@@ -1,0 +1,64 @@
+######################## Linux Groups ##########################
+
+Linux groups are a mechanism to manage a collection users.
+All Linux users have a user ID (UID) and a group ID (GID).
+Groups can be assigned users together for a common security, privilege and access purpose.
+Files and devices may be granted access based on a users ID or group ID.
+
+***** Important files:
+    /etc/group:- This file contains the group information for each account.
+    /etc/gshadow:- This file contains secure group account information.
+
+**** Create groups:
+
+    Create a new group:
+    groupadd grp01
+
+    tail -1 /etc/group
+    grp01:x:3461:
+    Creating group force with success status:
+    groupadd -f grp02
+
+    tail -1 /etc/group
+    grp02:x:3462:
+    Creating group with custom GID:
+    groupadd -g 5000 grp03
+
+    tail -1 /etc/group
+    grp03:x:5000:
+    Creating system group
+    groupadd -r sysgrp
+
+    tail -1 /etc/group
+    sysgrp:x:403:
+
+***** Modify groups:
+
+    Changing name of the group:
+    groupmod -n newgrp grp01
+
+    Adding and removing user to a group:
+    gpasswd -M user8,user7 grp03
+
+    tail /etc/group | grep grp03
+    grp03:x:5000:user8,user7
+
+
+    gpasswd -d user6 grp03
+
+    tail /etc/group | grep grp03
+    grp03:x:5000:user8,user7
+
+=====>> Options:
+    -M to add multiple users
+    -A to add group administrator
+    -a to add single user to group
+    -d to removing user from a group
+
+***** Delete a groups:
+
+    Delete a group:
+    groupdel newgrp
+
+
+

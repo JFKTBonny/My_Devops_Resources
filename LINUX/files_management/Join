@@ -1,0 +1,25 @@
+
+The join command is used to combine two files based on a common field (like SQL join).
+ Files must be sorted on the join field.
+
+🛠️ Syntax:
+
+join [options] file1 file2
+
+📌 Common Options:
+
+        -1 N → Join on Nth field of file1.
+
+        -2 N → Join on Nth field of file2.
+
+        -t → Specify a delimiter.
+
+        -o → Format output fields.
+
+             🧪 Examples:
+
+join file1.txt file2.txt              # Join on first field (default)
+join -1 2 -2 1 f1.txt f2.txt          # Join f1's 2nd field with f2's 1st
+join -t ',' file1.csv file2.csv      # Join using comma delimiter
+
+

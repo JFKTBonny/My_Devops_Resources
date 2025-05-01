@@ -1,0 +1,28 @@
+The sort command is used to arrange lines of text files in a specified order 
+(default is alphabetical/lexical order).
+
+🛠️ Basic Syntax:
+
+        sort [options] [file...]
+
+If no file is specified, sort reads from standard input.
+
+📌 Common Options:
+
+        -r → Sort in reverse order.
+
+        -n → Sort numerically (e.g., 2 before 10).
+
+        -k → Sort based on a specific column (e.g., -k2 for second column).
+
+        -u → Unique: Remove duplicate lines.
+
+        -o <file> → Write the output to a file instead of standard output.
+
+🧪 Examples:
+
+        sort file.txt                  # Sort alphabetically
+        sort -r file.txt               # Sort in reverse order
+        sort -n numbers.txt            # Sort numbers
+        sort -k2 data.txt              # Sort by the second column
+        sort -u names.txt              # Remove duplicates

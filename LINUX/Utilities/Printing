@@ -1,0 +1,55 @@
+############################### Printing
+
+The lp and lpr commands are used to print files from command line in Linux...
+    1- lp - submits files for printing or alters a pending job.
+    2- lpr - uses a spooling daemon to print the named files when facilities become available.
+
+You need to install CUPS and lpr to print the files using lp or lpr commands:
+    sudo apt-get install cups cups-client lpr
+
+Print a file:
+    lp Report.pdf
+    lpr Report.pdf
+
+
+Print file on a named printer:
+    lp -d Color-LaserJet Report.pdf
+    lpr -P Color-LaserJet Report.pdf
+
+
+Cancel a print job:
+   cancel requestid
+   lprm jobnumber
+
+
+Check the printer queue:
+   lpstat -a all
+    lpq -a
+
+
+Displaying printer settings:
+    lpoptions
+
+Two-sided printing:
+    lp -o sides=two-sided-long-edge Report.pdf
+    lpr -o sides=two-sided-long-edge Report.pdf
+
+
+Print in landscape:
+     lp -o landscape Report.pdf
+    lpr -o landscape Report.pdf
+
+
+Print only odd or even pages:
+    lp -o page-set=even Report.pdf
+    lpr -o page-set=even Report.pdf
+
+
+Set custom paper size to 42 x 42 inches:
+    lp -o media=Custom.42x42in Report.pdf
+    lpr -o media=Custom.42x42in Report.pdf
+
+
+
+
+

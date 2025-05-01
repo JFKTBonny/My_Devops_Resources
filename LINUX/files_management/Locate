@@ -1,0 +1,20 @@
+🔹 locate (Fast File Search)
+locate is used to quickly find files by name. It uses a pre-built database (updated using updatedb).
+
+🛠️ Syntax:
+
+        locate [options] pattern
+
+📌 Common Options:
+
+        -i → Case-insensitive search
+
+        -c → Count number of matches
+
+        -r → Use regular expressions
+
+🧪 Examples:
+
+        locate myfile.txt                   # Find all paths containing 'myfile.txt'
+        locate -i readme                    # Case-insensitive search
+        locate -c ".png"                    # Count all .png files

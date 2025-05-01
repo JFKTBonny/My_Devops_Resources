@@ -1,0 +1,21 @@
+🔹 awk (Pattern Scanning & Processing)
+awk is a powerful programming language for text processing and data extraction, especially useful for column-based operations.
+
+🛠️ Syntax:
+
+        awk 'pattern { action }' file
+
+📌 Common Uses:
+
+        Print specific fields
+
+        Perform calculations
+
+        Filter data with conditions
+
+🧪 Examples:
+
+        awk '{print $1}' file.txt              # Print 1st column
+        awk -F, '{print $2}' data.csv          # Use comma as delimiter
+        awk '$3 > 50' data.txt                 # Print rows where 3rd field > 50
+        awk '{sum += $2} END {print sum}' file.txt   # Sum 2nd column

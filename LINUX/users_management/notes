@@ -1,0 +1,159 @@
+############################ Linux Users ##################################
+
+There are three types of user accounts in Linux operating system:
+    - root user
+    - system  user
+    - regular or normal user 
+
+1. Root user
+    The root user is also called as super user. 
+    A super user can run any command with out any restrictions. 
+    This account gives you the ability to carry out all facets of system administration, including adding accounts, changing user passwords, examining log files, installing software, etc.
+
+
+
+2. System user
+    The System accounts are needed for the operation of system-specific components like mail accounts and the sshd accounts. 
+    Also if we install Apache, it will create a user apache. 
+    These kind of users are called as system user.
+
+3. Normal user
+These users are created by root user. 
+Normal user accounts provide access to the system for users and groups of users. 
+These users have limited access to critical system files and directories.
+
+***** Create users:
+    Create a user:
+    useradd scott
+
+    Assign password to user:
+    passwd scott
+    
+    Create a user with account expiry date:
+    useradd -e 2017-04-01 mark
+
+    passwd mark
+
+    Create a user with specific user id:
+    useradd -u 504 jones
+
+    Create a user with Specific user id and group id:
+    useradd -u 600 -g 504 ford
+
+***** Add a user to multiple groups:
+    We can add a user to multiple groups by specifying with group name or group id
+
+    useradd -G dev,qa smith
+
+    id smith
+    uid=601(smith) gid=601(smith) groups=601(smith),3460(dev),3461(qa)
+
+    useradd -G 3460,3461 ward
+
+    id ward
+    uid=602(ward) gid=602(ward)groups=602(ward),3460(dev),3461(qa)
+    Add a user with comments:
+    useradd -c"Developer" james
+
+    tail -1 /etc/passwd
+    james:x:603:603:Developer:/home/james:/bin/bash
+    Add user with home directory:
+    useradd -d /home/mydir allen
+
+    tail -1 /etc/passwd
+    allen:x:604:604::/home/mydir:/bin/bash
+
+
+   =========>> useradd options :
+            -u user id
+            -g primary group id
+            -G secondary group id
+            -d home directory
+            -c comment -s shell
+            -s shell
+
+
+***** Delete users:
+    Deleting a existing user:
+    userdel allen
+
+    Delete user even if he is still logged in:
+    userdel -f jones
+
+    Delete user along with home directory:
+    userdel -r mark
+
+
+***** Modify user properties:
+    Changing the home directory of user:
+    grep jones /etc/passwd
+    jones:x:504:504::/home/jones:/bin/bash
+
+    usermod -d /home/jon jones
+
+    grep jones /etc/passwd
+    user8:x:604:604::/home/jon:/bin/bash
+    Changing the primary group of a user:
+
+    usermod -g dev ford
+
+    Locking(-L) and Unlocking(-U) users:
+
+    usermod -L scott
+    usermod -U scott
+
+    Verify in /etc/shadow file it shows exclamation(!) mark at user name when user locked. After unlock it will disappear.
+
+    usermod -L scott
+
+    cat /etc/shadow | grep scott
+    scott:!$1$nAgOX9u$GLtQsaMcMBvlPUPgY.0:17143:0:99999:7:::
+
+    usermod -U scott
+
+    cat /etc/shadow | grep scott
+    scott:$1$nAgOX9u$GLtQsaMcMBvlPUPgY.0:17143:0:99999:7:::
+    Changing login name and password:
+
+    usermod -l karen james
+    usermod -p P@ssWord karen
+
+
+    View account aging information:
+
+      chage -l smith
+
+    Changing password parameters:
+
+      chage smith
+
+    Changing the aging information for smith
+    Enter the new value, or press ENTER for the default
+    User Attributes:
+    User Type : Super user
+    User Name : root
+    User ID : 0
+    Group ID : 0
+    Home directory : /root
+    Shell : /bin/bash
+
+
+    User Type : System user
+    User Name : ftp,apache etc..
+    User ID : 1 to 499
+    Group ID : 1 to 499
+    Home directory : /var/ftp, /var/etc etc..
+    Shell : /sbin/nologin
+
+
+    User Type : Normal user
+    User Name : mark, scott etc..
+    User ID : 500 to 60000
+    Group ID : 500 to 60000
+    Home directory : /home/username
+    Shell : /bin/bash
+    Important Files:
+    /etc/passwd: - Keeps user account and password information. This file holds the majority of information about accounts on the Linux system.
+    /etc/shadow: - Holds the encrypted password of the corresponding account.
+
+
