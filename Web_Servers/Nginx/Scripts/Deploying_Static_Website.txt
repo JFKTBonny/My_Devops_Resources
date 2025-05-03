@@ -1,0 +1,30 @@
+A static site deployment can be easy to generate and are far less hassle when 
+it comes to security and exploits...
+here are the steps to follow:
+   1- Edit the default site configuration file: /etc/nginx/conf.d/default.conf...
+   modify its content as below:
+
+
+            server {
+                listen       80;
+                server_name  server.yourdomain.com;
+
+                access_log  /var/log/nginx/log/host.access.log  
+                combined;
+
+                location / {
+                    root   /var/www/html;
+                    index  index.html;
+                }
+            }
+
+    2- If the folder does not exist ,create the /var/www/vhosts directory as follow:
+             mkdir -p /var/www/vhosts
+
+    3- Copy your existing website files into /var/www/vhosts directory...
+
+    4- Ensure the files and folders have permissions to be read by nginx user(nginx or www-data):
+               chmod -R o+r /var/www/vhosts
+               chown -R nginx:nginx /var/www/vhosts
+
+    5- Open your browser and check that it is serving your content...           

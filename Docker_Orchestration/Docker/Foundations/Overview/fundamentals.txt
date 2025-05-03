@@ -1,0 +1,12 @@
+Docker Compose:
+Goal: Define and run multiple containers service at once...
+
+    *** docker-compose.yml:   Defines the configuration for multi-container apps.
+
+    *** Services:             Define the application services (e.g., web app, database).
+
+    *** Volumes:              Share data between containers.
+
+    *** Networks:             Define how containers communicate.
+
+

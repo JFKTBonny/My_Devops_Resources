@@ -1,0 +1,51 @@
+Basic Instructions:
+
+        FROM:        Defines the base image.
+
+        RUN:         Executes commands to install dependencies.
+
+        COPY/ADD:    Copies files from your local machine into the container.
+
+        EXPOSE:      Defines which port the container will listen to.
+
+        CMD:         Defines the command to run when the container starts.
+
+        ENTRYPOINT:  Similar to CMD, but ensures the command is always executed (useful for running services).
+
+        WORKDIR:     Set the working directory for your application inside the container.
+
+Example Dockerfile:
+
+            FROM node:14
+            WORKDIR /app
+            COPY . .
+            RUN npm install
+            EXPOSE 3000
+            CMD ["npm", "start"]
+        
+Optimizations:
+
+        - Minimize Layers: Combine commands to reduce image size.
+
+        - Use Multistage Builds: Useful for separating build and runtime environments.
+
+        Example of Multi-Stage Dockerfile:
+
+            # Build Stage
+            FROM node:14 AS builder
+            WORKDIR /app
+            COPY . .
+            RUN npm install
+
+            # Runtime Stage
+            FROM node:14-slim
+            WORKDIR /app
+            COPY --from=builder /app .
+            EXPOSE 3000
+            CMD ["npm", "start"]
+                
+
+
+
+
+                

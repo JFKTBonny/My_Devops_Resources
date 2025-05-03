@@ -1,0 +1,4 @@
+Running Containers:
+
+*** docker run -d -p 80:80 nginx:    Starts an NGINX container and maps port 80 on the host to port 80 on the container.
+

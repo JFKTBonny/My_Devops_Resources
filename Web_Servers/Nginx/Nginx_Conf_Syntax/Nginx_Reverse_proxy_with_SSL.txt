@@ -1,0 +1,72 @@
+# SSL Configuration
+server {
+    listen 443 ssl;
+    server_name yourdomain.com www.yourdomain.com;
+
+    # SSL Certificates (Let's Encrypt or your own certificate)
+    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+
+    # SSL Settings (Ensure secure connections)
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+    ssl_prefer_server_ciphers on;
+
+    # Access Logs
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+
+    # Load Balancer Configuration - Reverse Proxy
+    location / {
+        # Load Balancing (round-robin by default)
+        proxy_pass http://backend_servers;  # This points to the upstream block
+
+        # Set Headers for the proxied requests
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Connection 'upgrade';
+        proxy_http_version 1.1;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+# HTTP -> HTTPS Redirect (to force HTTPS)
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+
+    # Redirect HTTP traffic to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+# Upstream Block (Load Balancer)
+# Define the backend servers for load balancing
+upstream backend_servers {
+    server backend1.example.com;  # First backend server
+    server backend2.example.com;  # Second backend server
+    # You can add more backend servers here
+}
+
+    1. SSL Configuration:
+        Listen on port 443: NGINX is listening for HTTPS traffic.
+
+        SSL Certificates: These are configured with the paths to your SSL certificate and private key (issued by Let's Encrypt or any other CA).
+
+        SSL Security Settings: Includes setting strong ciphers and protocols (TLSv1.2, TLSv1.3).
+
+    2. Reverse Proxy:
+        The location / block handles the reverse proxy.
+
+        proxy_pass: This forwards the request to the upstream block (defined below).
+
+        proxy_set_header: Ensures the proper headers are passed to the backend server to preserve the original client IP and other request information.
+
+    3. Load Balancer (Upstream Block):
+        The upstream backend_servers block defines the list of backend servers (backend1.example.com, backend2.example.com, etc.).
+
+        NGINX will distribute requests across these servers by default using round-robin load balancing.
+
+    4. HTTP to HTTPS Redirect:
+        The server block listening on port 80 ensures that all HTTP traffic is automatically redirected to HTTPS (port 443).

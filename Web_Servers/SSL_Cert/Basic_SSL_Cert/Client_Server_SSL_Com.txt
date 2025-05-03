@@ -1,0 +1,18 @@
+*** SSL Communication Between the Client (Browser) and the Server (Web Server) ***
+
+1. First, the browser contacts the web server and initiates an SSL handshake.
+   It also informs the server which cipher (encryption) algorithms it supports.
+
+2. Next, the server responds to the browser.
+   It confirms the cipher that will be used and sends a copy of its public certificate to the client.
+
+3. The client (browser) then contacts the Certificate Authority (CA) to authenticate the server’s certificate.
+
+4. The key exchange begins, and a session key is established.
+   This key is generated using the public key from the server and can only be decrypted with the server's private key.
+
+5. Once the session key is established, the client sends a final confirmation to complete the handshake,
+   and waits for a final response from the server to confirm the secure connection.
+
+6. Finally, a secure tunnel is established through which encrypted data can be transmitted.
+   This is where actual web content can now be exchanged securely.

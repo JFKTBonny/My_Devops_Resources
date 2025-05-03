@@ -1,0 +1,19 @@
+Monitoring & Troubleshooting:
+Goal: Keep containers healthy and debug when things go wrong.
+
+Key Commands:
+
+        *** docker logs <container_id>:                  View the logs for a container.
+
+        *** docker exec -it <container_id> /bin/bash:     Execute a command in a running container.
+
+        *** docker stats:                                 View resource usage stats for containers.
+
+Monitoring Tools:
+
+        - Prometheus:   Scrapes metrics from containers.
+
+        - Grafana:      Visualizes metrics from Prometheus.
+
+        - cAdvisor:     Collects container metrics.        
+

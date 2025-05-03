@@ -1,0 +1,65 @@
+# HTTP (non-SSL) configuration to redirect to HTTPS
+server {
+    listen 80;
+    server_name bonnyzone.site www.bonnyzone.site;
+
+    # Redirect HTTP to HTTPS
+    return 301 https://$host$request_uri;
+}
+
+# HTTPS (SSL) configuration
+server {
+    listen 443 ssl;
+    server_name bonnyzone.site www.bonnyzone.site;
+
+    # Path to your SSL certificate and key
+    ssl_certificate /etc/letsencrypt/live/bonnyzone.site/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/bonnyzone.site/privkey.pem;
+
+    # SSL settings for better security
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256';
+    ssl_prefer_server_ciphers on;
+
+    # Other SSL settings to prevent SSL vulnerabilities
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+    ssl_session_tickets off;
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+    root /var/www/bonnyzone.site;
+    index index.html foss.html index2.html index.htm;
+
+    error_page 404 /404.html;
+    error_page 500 502 503 504 /50x.html;
+
+    location /foss {
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/.htpasswd;
+        alias /var/www/bonnyzone.site/foss.html;
+        default_type text/html;
+    }
+
+    location /index2 {
+        alias /var/www/bonnyzone.site/index2.html;
+        default_type text/html;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+    client_max_body_size 10M;
+
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
+}
+
+
+# Generate Diffie-Hellman parameters (optional but recommended for stronger security):
+
+   sudo openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+ 

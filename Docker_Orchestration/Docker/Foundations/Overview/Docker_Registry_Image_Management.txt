@@ -1,0 +1,18 @@
+Docker Registry & Image Management:
+Goal: Store and retrieve Docker images.
+
+    Docker Hub:
+
+            Docker Hub is the default public registry for Docker images.
+
+            Private Registries: 
+                You can use your own private registry to store images.
+
+    Pushing and Pulling Images:
+
+            *** docker tag myapp:latest myusername/myapp:v1
+
+            *** docker push myusername/myapp:v1
+
+            *** docker pull myusername/myapp:v1
+

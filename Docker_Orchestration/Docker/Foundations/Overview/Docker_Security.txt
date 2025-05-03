@@ -1,0 +1,10 @@
+Docker Security
+Goal: Secure Docker images and containers.
+
+    Security Best Practices:
+
+        *** Use minimal images:                Start with lightweight images like alpine.
+
+        *** Avoid Running as Root:             Always run containers as a non-root user by using the USER directive in your Dockerfile.
+
+        **** Scan Images for Vulnerabilities:  Use docker scan <image> to check for vulnerabilities.

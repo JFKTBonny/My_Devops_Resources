@@ -1,0 +1,15 @@
+Network Types:
+
+    - Bridge:     Default network driver, connects containers on the same host.
+
+    - Host:       Containers share the host’s network.
+
+    - Overlay:    Used in Docker Swarm for cross-host communication.
+
+Creating Networks:
+        docker network create my_network
+        docker run --network my_network --name my_container my_image
+
+Inspect Networks:
+        docker network inspect my_network
+

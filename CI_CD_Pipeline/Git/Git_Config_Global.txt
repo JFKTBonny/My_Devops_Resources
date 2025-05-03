@@ -21,8 +21,8 @@
         ssh-keygen -t rsa -b 4096 -C "your.email@example.com" -f ~/.ssh/your_key_name
 
 ##  Add the New SSH Key to the SSH Agent:
-       eval "$(ssh-agent -s)"
-       ssh-add ~/.ssh/your_key_name   
+      eval "$(ssh-agent -s)"
+      ssh-add ~/.ssh/your_key_name    
 
 ##   Add the Public Key to Your GitHub Account:
 

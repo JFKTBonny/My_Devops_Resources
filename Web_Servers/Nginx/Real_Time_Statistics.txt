@@ -1,0 +1,12 @@
+The real time statistics is the way to monitor in real time whatever happen on your web server..
+ngxtop is a tool that can be install to handle that task..
+It monitor your real-time access log and display useful metrics such as:
+                       - number of request per second
+                       - http status served
+                       - and pages urls served
+*** steps to install it:
+     -  apt-get install python-pip
+     - pip install ngxtop
+     - ngxtop -l /var/log/nginx/access.log  
+
+To filter only the 404 pages:  ngxtop -l /var/log/nginx/access.log --filter 'status == 404'    

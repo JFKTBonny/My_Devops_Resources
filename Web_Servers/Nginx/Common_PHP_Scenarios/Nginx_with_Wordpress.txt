@@ -1,0 +1,9 @@
+*** PHP is one of the most popular web-based programming language...
+It powers sites such as:  
+             - facebook
+             - wikipedia
+             - and every wordpress-based site
+
+Wordpress is a poweful Content Management System(CMS) for all content types 
+and powers some of the world's busiest wensites...             
+By combinig it with Nginx ,you can deploy a high scalable web platform...

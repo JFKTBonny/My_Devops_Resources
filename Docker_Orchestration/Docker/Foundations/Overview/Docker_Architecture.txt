@@ -1,0 +1,6 @@
+Docker Architecture:
+        *** Client: The Docker CLI or API interacts with the Docker daemon.  
+        *** Daemon: The server-side process responsible for building, running, and managing containers.
+        *** Images: A read-only template used to create containers.
+
+

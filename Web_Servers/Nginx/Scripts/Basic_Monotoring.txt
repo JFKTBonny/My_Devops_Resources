@@ -1,0 +1,12 @@
+the below block can be used to monitor the performance and the uptime of a web server 
+by checking its statistics and service status...
+
+    location = /nginx_status {
+        stub_status on;
+        access_log
+        off;
+        allow <YOURIPADDRESS>;
+        deny all;
+    }
+
+then , you can access those informations on the browser using the url/nginx_status    

@@ -1,0 +1,13 @@
+Key Commands:
+
+        *** docker run hello-world:              Verifies that Docker is installed correctly.
+
+        *** docker ps:                           Lists running containers.
+
+        *** docker stop <container_id>:          Stops a container.
+
+        *** docker rm <container_id>:            Removes a container.
+
+        *** docker images:                       Lists available images.
+
+        *** docker rmi <image_id>:               Removes an image.

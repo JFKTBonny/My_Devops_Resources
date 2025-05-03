@@ -1,0 +1,5 @@
+Install Docker Engine:
+
+    Use the official Docker documentation for installation.
+    After installation, run docker --version to verify the setup.   
+    

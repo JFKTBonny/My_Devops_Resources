@@ -1,0 +1,26 @@
+Volumes:
+
+    Volumes are Docker's preferred mechanism for persisting data.
+
+    Docker Volumes are independent of the host filesystem.
+
+   *** To create a volume Use:  docker volume create <name> 
+
+Mounting Volumes:
+           docker run -v /host/path:/container/path myapp
+
+Data Persistence:
+        - Bind Mounts:      Useful for development (bind a local file or directory to the container).
+
+        - Docker Volumes:   Better suited for production as they are managed by Docker and provide more features (backup, restore, etc.).  
+
+Backup and Restore:
+
+    - Backup data in volumes using:
+            docker run --rm -v <volume_name>:/volume -v $(pwd):/backup busybox tar cvf /backup/backup.tar /volume
+                
+
+
+
+
+

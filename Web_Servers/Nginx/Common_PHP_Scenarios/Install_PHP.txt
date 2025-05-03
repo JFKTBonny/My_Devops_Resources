@@ -1,0 +1,2 @@
+# Install PHP-FPM for NGINX:
+          sudo apt install php-fpm
